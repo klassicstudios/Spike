@@ -265,14 +265,11 @@ package services
 		//Event fired when a new BG value is received from the transmitter
 		private static function onBgReadingReceived(event:Event = null):void 
 		{
-			//if phone is muted and mute is not overriden by alert, then there's no need to suppress the speak bgreading even if an alarm is ongoing
-			if (CommonSettings.getCommonSetting(CommonSettings.COMMON_SETTING_SPEAK_READINGS_ON) == "true" 
-				&& 
-					(	!BackgroundFetch.isPlayingSound() 
-						|| 
-						(ModelLocator.phoneMuted && !(LocalSettings.getLocalSetting(LocalSettings.LOCAL_SETTING_OVERRIDE_MUTE) == "true"))
-					)
-			   ) 
+			if (CommonSettings.getCommonSetting(CommonSettings.COMMON_SETTING_SPEAK_READINGS_ON) == "true"
+				&&
+				!BackgroundFetch.isPlayingSound() 
+				&&
+				((!ModelLocator.phoneMuted) || LocalSettings.getLocalSetting(LocalSettings.LOCAL_SETTING_OVERRIDE_MUTE) == "true"))
 			{	
 				//Speak BG Reading
 				speakReading();
